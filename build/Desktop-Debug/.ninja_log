@@ -1,0 +1,7 @@
+# ninja log v7
+0	19	1771780633698270960	build.ninja	f6c0f8e9bf80fe24
+0	19	1771780633697873902	/home/ion/Projects/AudioEngine/build/Desktop-Debug/cmake_install.cmake	f6c0f8e9bf80fe24
+1	253	1771644402028934383	CMakeFiles/AudioEngine.dir/main.cpp.o	8ca678f4ebbe435f
+253	284	1771644402281940368	AudioEngine	e932589d8d0174ad
+1	138	1771634717647115777	CMakeFiles/AudioEngine.dir/AudioBuffer.cpp.o	f7828970bb4a988e
+0	185	1771644212194887328	CMakeFiles/AudioEngine.dir/AudioEngine.cpp.o	d803b25415f3514d
