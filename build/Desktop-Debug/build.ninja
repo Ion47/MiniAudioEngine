@@ -73,6 +73,14 @@ build CMakeFiles/AudioEngine.dir/AudioEngine.cpp.o: CXX_COMPILER__AudioEngine_un
   OBJECT_FILE_DIR = CMakeFiles/AudioEngine.dir
   TARGET_SUPPORT_DIR = CMakeFiles/AudioEngine.dir
 
+build CMakeFiles/AudioEngine.dir/Limiter.cpp.o: CXX_COMPILER__AudioEngine_unscanned_Debug /home/ion/Projects/AudioEngine/Limiter.cpp || cmake_object_order_depends_target_AudioEngine
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/AudioEngine.dir/Limiter.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/AudioEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles/AudioEngine.dir
+  TARGET_SUPPORT_DIR = CMakeFiles/AudioEngine.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target AudioEngine
@@ -81,7 +89,7 @@ build CMakeFiles/AudioEngine.dir/AudioEngine.cpp.o: CXX_COMPILER__AudioEngine_un
 #############################################
 # Link the executable AudioEngine
 
-build AudioEngine: CXX_EXECUTABLE_LINKER__AudioEngine_Debug CMakeFiles/AudioEngine.dir/main.cpp.o CMakeFiles/AudioEngine.dir/AudioBuffer.cpp.o CMakeFiles/AudioEngine.dir/AudioEngine.cpp.o
+build AudioEngine: CXX_EXECUTABLE_LINKER__AudioEngine_Debug CMakeFiles/AudioEngine.dir/main.cpp.o CMakeFiles/AudioEngine.dir/AudioBuffer.cpp.o CMakeFiles/AudioEngine.dir/AudioEngine.cpp.o CMakeFiles/AudioEngine.dir/Limiter.cpp.o
   CONFIG = Debug
   DEP_FILE = CMakeFiles/AudioEngine.dir/link.d
   FLAGS = -DQT_QML_DEBUG -g

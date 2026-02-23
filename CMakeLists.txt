@@ -13,6 +13,8 @@ add_executable(AudioEngine main.cpp
     AudioEngine.h
     AudioEngine.cpp
     LowPassFilter.h
+    Limiter.h
+    Limiter.cpp
 
 )
 

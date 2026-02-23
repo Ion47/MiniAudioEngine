@@ -1,9 +1,14 @@
 #pragma once
 #include "AudioBuffer.h"
 #include "AudioSource.h"
+#include "LowPassFilter.h"
+#include "Limiter.h"
+
 #include <vector>
 #include <memory>
 #include <algorithm>
+
+
 
 class AudioEngine{
 public:
@@ -20,5 +25,8 @@ private:
     AudioBuffer mBuffer;
     double mSampleRate;
     std::vector<std::shared_ptr<AudioSource>> mSources;
+
+    LowPassFilter mLowPass;
+    Limiter mLimiter;
 
 };

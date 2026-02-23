@@ -23,19 +23,65 @@ int main()
     // return 0;
 
 
+    //SineWaveSource
     AudioEngine engine(2, 480, 48000);
 
-    auto sine1 = std::make_shared<SineWaveSource>(440.0f, 0.5f);
-    auto sine2 = std::make_shared<SineWaveSource>(880.0f, 0.25f);
+    auto sine = std::make_shared<SineWaveSource>(440.0f,1.0f,1);
+    engine.addSource(sine);
 
+    engine.processBlock();
 
-    engine.addSource(sine1);
-    engine.addSource(sine2);
+    auto left = engine.getBuffer().getReadPointer(0);
 
-
-    for(int i=0;i<5;++i){
-        engine.processBlock();
-        auto left = engine.getBuffer().getReadPointer(0);
-        std::cout << "Block " << i << " first left sample: " << left[0] << "\n";
+    std::cout<<"First 10 samples:\n";
+    for(int i=0; i < 10; i++){
+        std::cout<<left[i]<<"\n";
     }
+
+    //
+
+    engine.processBlock();
+    float lastSample = engine.getBuffer().getReadPointer(0)[479];
+
+    engine.processBlock();
+    float firstNext = engine.getBuffer().getReadPointer(0)[0];
+
+    std::cout << "Last sample block1: " << lastSample << "\n";
+    std::cout << "First sample block2: " << firstNext << "\n";
+
+    //Ducking
+
+    auto sineLow = std::make_shared<SineWaveSource>(440.0f,0.5f,1);
+    auto sineHigh = std::make_shared<SineWaveSource>(440.0f,0.5f,5);
+
+    engine.addSource(sineLow);
+    engine.addSource(sineHigh);
+
+    engine.processBlock();
+
+    std::cout<<"First 10 samples:\n";
+    for(int i=0; i < 10; i++){
+        std::cout<<left[i]<<"\n";
+    }
+
+
+    //Limiter
+
+    AudioEngine engine2(2, 480, 48000);
+
+    auto s1 = std::make_shared<SineWaveSource>(440.0f,1.0f,1);
+    auto s2 = std::make_shared<SineWaveSource>(440.0f,1.0f,1);
+
+    engine2.addSource(s1);
+    engine2.addSource(s2);
+
+    engine2.processBlock();
+
+    auto left2 = engine2.getBuffer().getReadPointer(0);
+
+    float maxVal = 0.0f;
+    for(int i = 0; i < 480; ++i)
+        maxVal = std::max(maxVal, std::abs(left2[i]));
+
+    std::cout << "Max val: " << maxVal << "\n";
 }

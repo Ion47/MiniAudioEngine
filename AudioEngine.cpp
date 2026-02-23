@@ -3,6 +3,9 @@
 AudioEngine::AudioEngine(std::size_t numChannels, std::size_t bufferSize, double sampleRate)
     : mBuffer(numChannels, bufferSize), mSampleRate(sampleRate){
 
+    mLimiter.setThreshold(0.9f);
+    mLowPass.prepare(sampleRate, numChannels);
+    mLowPass.setCutoff(2000.0f);
 }
 
 void AudioEngine::addSource(std::shared_ptr<AudioSource> source){
@@ -16,11 +19,47 @@ void AudioEngine::removeSource(std::shared_ptr<AudioSource> source){
         mSources.erase(it);
 }
 
-void AudioEngine::processBlock(){
+void AudioEngine::processBlock(){ //Ducking - volumul unor elementele audio scad automat
     mBuffer.clear();
 
+    if(mSources.empty())
+        return;
+
+    int maxPriority = 0;
+
+    for(auto& src : mSources)
+        maxPriority = std::max(maxPriority, src->getPriority());
+
     for(auto& src : mSources){
-        src->process(mBuffer);
+        float gain = 1.0f;
+
+        if(src->getPriority() < maxPriority)
+            gain = 0.3f;
+
+        AudioBuffer tempBuffer = mBuffer;
+        tempBuffer.clear();
+
+        src->process(tempBuffer);
+
+        for(std::size_t ch = 0; ch < mBuffer.getNumChannels();++ch){
+            float* main = mBuffer.getWritePointer(ch);
+            float* temp = tempBuffer.getWritePointer(ch);
+
+            for(std::size_t i = 0; i <mBuffer.getNumSamples();++i){
+                main[i] += temp[i]*gain;
+            }
+        }
+
+        for(std::size_t ch = 0; ch < mBuffer.getNumChannels(); ++ch)
+        {
+            float* data = mBuffer.getWritePointer(ch);
+            mLowPass.process(data, mBuffer.getNumSamples(), ch);
+        }
+
+        for(std::size_t ch = 0; ch < mBuffer.getNumChannels();++ch){
+            float* data = mBuffer.getWritePointer(ch);
+            mLimiter.process(data, mBuffer.getNumSamples());
+        }
     }
 }
 
